@@ -1,41 +1,79 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { Shield, Award, Users, Target, Eye, Heart } from "lucide-react";
+import { Mail, Phone, MapPin, Send, CheckCircle } from "lucide-react";
+import Link from "next/link";
 
-const valores = [
-    {
-        icono: Shield,
-        titulo: "Integridad",
-        descripcion: "Actuamos con transparencia y ética en cada proceso de certificación.",
-    },
-    {
-        icono: Target,
-        titulo: "Excelencia",
-        descripcion: "Nos exigimos los más altos estándares en cada evaluación que realizamos.",
-    },
-    {
-        icono: Users,
-        titulo: "Compromiso",
-        descripcion: "Acompañamos a cada cliente durante todo su proceso, sin abandonarlos.",
-    },
-    {
-        icono: Heart,
-        titulo: "Vocación",
-        descripcion: "Creemos genuinamente que la calidad transforma organizaciones y personas.",
-    },
+// Estado del formulario — TypeScript nos obliga a definir
+// la forma exacta de los datos. Esto evita errores silenciosos.
+type FormData = {
+    nombre: string;
+    empresa: string;
+    email: string;
+    telefono: string;
+    servicio: string;
+    mensaje: string;
+};
+
+const serviciosOpciones = [
+    "Calidad Turística",
+    "ISO 9001:2015 - Gestión de Calidad",
+    "ISO 14001:2015 - Gestión Ambiental",
+    "ISO 45001:2018 - Seguridad Ocupacional",
+    "ISO 27001:2022 - Seguridad de la Información",
+    "ISO 50001:2018 - Gestión de Energía",
+    "Guías de Turismo",
+    "No sé cuál necesito — quiero orientación",
 ];
 
-const hitos = [
-    { año: "2013", evento: "Fundación de V&B Certifica en Santiago" },
-    { año: "2015", evento: "Primera acreditación como organismo certificador" },
-    { año: "2017", evento: "Expansión al sector de calidad turística" },
-    { año: "2019", evento: "Superamos las 200 empresas certificadas" },
-    { año: "2022", evento: "Incorporación de ISO 27001 e ISO 50001" },
-    { año: "2024", evento: "Más de 500 organizaciones certificadas en Chile" },
-];
+export default function PaginaContacto() {
+    const [form, setForm] = useState<FormData>({
+        nombre: "", empresa: "", email: "",
+        telefono: "", servicio: "", mensaje: "",
+    });
+    const [enviado, setEnviado] = useState(false);
+    const [enviando, setEnviando] = useState(false);
 
-export default function PaginaNosotros() {
+    function handleChange(campo: keyof FormData, valor: string) {
+        setForm((prev) => ({ ...prev, [campo]: valor }));
+    }
+
+    async function handleSubmit() {
+        if (!form.nombre || !form.email || !form.servicio) return;
+        setEnviando(true);
+
+        try {
+            const res = await fetch("/api/contacto", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(form),
+            });
+
+            if (!res.ok) throw new Error("Error del servidor");
+
+            setEnviado(true);
+
+        } catch (error) {
+            alert("Hubo un problema al enviar. Por favor intenta de nuevo o contáctanos directamente.");
+        } finally {
+            setEnviando(false);
+        }
+    }
+
+    const inputStyle = {
+        background: "var(--color-vyb-gris-claro)",
+        border: "1.5px solid rgba(27,79,138,0.12)",
+        borderRadius: 12,
+        color: "var(--color-vyb-gris-oscuro)",
+        fontFamily: "var(--font-cuerpo)",
+        fontSize: 14,
+        padding: "12px 16px",
+        width: "100%",
+        outline: "none",
+        transition: "border-color 0.2s",
+    };
+
     return (
         <main className="min-h-screen pt-20">
 
@@ -44,179 +82,226 @@ export default function PaginaNosotros() {
                 style={{ background: "linear-gradient(135deg, var(--color-vyb-azul) 0%, #1a3a6b 100%)" }}>
                 <div className="max-w-4xl mx-auto">
                     <motion.div
-                        initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-                        className="flex items-center gap-2 text-sm mb-8"
-                        style={{ color: "rgba(255,255,255,0.6)" }}>
-                        <a href="/" className="hover:text-white transition-colors">Inicio</a>
-                        <span>/</span>
-                        <span style={{ color: "var(--color-vyb-acento)" }}>Nosotros</span>
-                    </motion.div>
-
-                    <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}>
-                        <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-6"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6 }}
+                    >
+                        <div className="flex items-center gap-2 text-sm mb-8"
+                            style={{ color: "rgba(255,255,255,0.6)" }}>
+                            <Link href="/" className="hover:text-white transition-colors">Inicio</Link>
+                            <span>/</span>
+                            <span style={{ color: "var(--color-vyb-acento)" }}>Contacto</span>
+                        </div>
+                        <h1 className="text-4xl md:text-6xl font-extrabold mb-4"
                             style={{ fontFamily: "var(--font-titulo)" }}>
-                            Más de 10 años<br />
-                            <span style={{ color: "var(--color-vyb-acento)" }}>
-                                certificando Chile
-                            </span>
+                            Hablemos
                         </h1>
-                        <p className="text-lg max-w-2xl leading-relaxed"
-                            style={{ color: "rgba(255,255,255,0.75)" }}>
-                            Somos un organismo de certificación independiente, comprometido
-                            con elevar los estándares de calidad en empresas y personas a lo
-                            largo de todo el país.
+                        <p className="text-lg" style={{ color: "rgba(255,255,255,0.75)" }}>
+                            Cuéntanos sobre tu proyecto y te orientamos sin compromiso.
                         </p>
                     </motion.div>
                 </div>
             </section>
 
-            {/* MISIÓN Y VISIÓN */}
-            <section className="py-20 px-6 bg-white">
-                <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* CONTENIDO PRINCIPAL */}
+            <section className="py-20 px-6" style={{ background: "var(--color-vyb-gris-claro)" }}>
+                <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12">
+
+                    {/* Info de contacto — columna izquierda */}
                     <motion.div
                         initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        className="p-8 rounded-3xl"
-                        style={{ background: "var(--color-vyb-azul)", boxShadow: "var(--shadow-vyb-hover)" }}>
-                        <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-6"
-                            style={{ background: "rgba(255,255,255,0.15)" }}>
-                            <Target size={22} color="white" />
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.6 }}
+                        className="flex flex-col gap-6"
+                    >
+                        <div>
+                            <h2 className="text-2xl font-bold mb-2"
+                                style={{ color: "var(--color-vyb-gris-oscuro)", fontFamily: "var(--font-titulo)" }}>
+                                Información de contacto
+                            </h2>
+                            <p className="text-sm" style={{ color: "var(--color-vyb-gris-medio)" }}>
+                                Respondemos en menos de 24 horas hábiles.
+                            </p>
                         </div>
-                        <h2 className="text-2xl font-bold text-white mb-4"
-                            style={{ fontFamily: "var(--font-titulo)" }}>
-                            Nuestra misión
-                        </h2>
-                        <p className="leading-relaxed" style={{ color: "rgba(255,255,255,0.8)" }}>
-                            Evaluar y certificar la conformidad de productos, procesos y
-                            sistemas de gestión, contribuyendo al mejoramiento continuo
-                            de las organizaciones chilenas y su competitividad nacional
-                            e internacional.
-                        </p>
+
+                        {[
+                            { icono: MapPin, titulo: "Dirección", texto: "Ahumada #254 of. 608\nSantiago, Chile" },
+                            { icono: Phone, titulo: "Teléfonos", texto: "+56 9 29910646\n+56 9 92144113" },
+                            { icono: Mail, titulo: "Email", texto: "contacto@vybcertifica.cl" },
+                        ].map((item) => (
+                            <div key={item.titulo} className="flex gap-4 p-5 rounded-2xl"
+                                style={{ background: "white", boxShadow: "var(--shadow-vyb-card)" }}>
+                                <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                                    style={{ background: "var(--color-vyb-azul-claro)" }}>
+                                    <item.icono size={18} style={{ color: "var(--color-vyb-azul)" }} />
+                                </div>
+                                <div>
+                                    <p className="text-xs font-semibold mb-1 uppercase tracking-wide"
+                                        style={{ color: "var(--color-vyb-gris-medio)", fontFamily: "var(--font-titulo)" }}>
+                                        {item.titulo}
+                                    </p>
+                                    <p className="text-sm whitespace-pre-line"
+                                        style={{ color: "var(--color-vyb-gris-oscuro)" }}>
+                                        {item.texto}
+                                    </p>
+                                </div>
+                            </div>
+                        ))}
+
+                        {/* WhatsApp directo */}
+                        <a href="https://wa.me/56929910646" target="_blank" rel="noopener noreferrer"
+                            className="flex items-center justify-center gap-2 py-3 px-6 rounded-full text-sm font-semibold transition-all duration-300 hover:scale-105"
+                            style={{ background: "#25D366", color: "white", fontFamily: "var(--font-titulo)" }}>
+                            Escribir por WhatsApp
+                        </a>
                     </motion.div>
 
+                    {/* Formulario — columna derecha (2/3 del ancho) */}
                     <motion.div
                         initial={{ opacity: 0, x: 20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        className="p-8 rounded-3xl"
-                        style={{ background: "var(--color-vyb-gris-claro)", boxShadow: "var(--shadow-vyb-card)" }}>
-                        <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-6"
-                            style={{ background: "var(--color-vyb-azul-claro)" }}>
-                            <Eye size={22} style={{ color: "var(--color-vyb-azul)" }} />
-                        </div>
-                        <h2 className="text-2xl font-bold mb-4"
-                            style={{ color: "var(--color-vyb-gris-oscuro)", fontFamily: "var(--font-titulo)" }}>
-                            Nuestra visión
-                        </h2>
-                        <p className="leading-relaxed" style={{ color: "var(--color-vyb-gris-medio)" }}>
-                            Ser el organismo de certificación de referencia en Chile,
-                            reconocido por su rigor técnico, cercanía con los clientes
-                            y contribución al desarrollo de una cultura de calidad en
-                            el país.
-                        </p>
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* VALORES */}
-            <section className="py-20 px-6" style={{ background: "var(--color-vyb-gris-claro)" }}>
-                <div className="max-w-6xl mx-auto">
-                    <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }} className="text-center mb-14">
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4"
-                            style={{ color: "var(--color-vyb-gris-oscuro)", fontFamily: "var(--font-titulo)" }}>
-                            Nuestros valores
-                        </h2>
-                    </motion.div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {valores.map((v, i) => (
-                            <motion.div key={v.titulo}
-                                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-                                whileHover={{ y: -6 }}
-                                className="p-6 rounded-3xl text-center transition-all duration-300"
-                                style={{ background: "white", boxShadow: "var(--shadow-vyb-card)" }}>
-                                <div className="w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-4"
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.6, delay: 0.1 }}
+                        className="lg:col-span-2 p-8 rounded-3xl"
+                        style={{ background: "white", boxShadow: "var(--shadow-vyb-hover)" }}
+                    >
+                        {enviado ? (
+                            // Estado de éxito — se muestra tras enviar
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className="flex flex-col items-center justify-center h-full py-12 text-center gap-4"
+                            >
+                                <div className="w-16 h-16 rounded-full flex items-center justify-center"
                                     style={{ background: "var(--color-vyb-azul-claro)" }}>
-                                    <v.icono size={22} style={{ color: "var(--color-vyb-azul)" }} />
+                                    <CheckCircle size={32} style={{ color: "var(--color-vyb-azul)" }} />
                                 </div>
-                                <h3 className="font-bold mb-2"
+                                <h3 className="text-2xl font-bold"
                                     style={{ color: "var(--color-vyb-gris-oscuro)", fontFamily: "var(--font-titulo)" }}>
-                                    {v.titulo}
+                                    ¡Mensaje enviado!
                                 </h3>
-                                <p className="text-sm leading-relaxed"
-                                    style={{ color: "var(--color-vyb-gris-medio)" }}>
-                                    {v.descripcion}
+                                <p style={{ color: "var(--color-vyb-gris-medio)" }}>
+                                    Te contactaremos en menos de 24 horas hábiles.
                                 </p>
+                                <button
+                                    onClick={() => { setEnviado(false); setForm({ nombre: "", empresa: "", email: "", telefono: "", servicio: "", mensaje: "" }); }}
+                                    className="mt-4 px-6 py-2 rounded-full text-sm font-semibold"
+                                    style={{ background: "var(--color-vyb-azul-claro)", color: "var(--color-vyb-azul)", fontFamily: "var(--font-titulo)" }}>
+                                    Enviar otro mensaje
+                                </button>
                             </motion.div>
-                        ))}
-                    </div>
-                </div>
-            </section>
+                        ) : (
+                            <div className="flex flex-col gap-5">
+                                <h3 className="text-xl font-bold mb-2"
+                                    style={{ color: "var(--color-vyb-gris-oscuro)", fontFamily: "var(--font-titulo)" }}>
+                                    Formulario de contacto
+                                </h3>
 
-            {/* LÍNEA DE TIEMPO */}
-            <section className="py-20 px-6 bg-white">
-                <div className="max-w-3xl mx-auto">
-                    <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }} className="text-center mb-14">
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4"
-                            style={{ color: "var(--color-vyb-gris-oscuro)", fontFamily: "var(--font-titulo)" }}>
-                            Nuestra historia
-                        </h2>
+                                {/* Fila de dos columnas */}
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                    <div className="flex flex-col gap-1.5">
+                                        <label className="text-xs font-semibold uppercase tracking-wide"
+                                            style={{ color: "var(--color-vyb-gris-medio)", fontFamily: "var(--font-titulo)" }}>
+                                            Nombre *
+                                        </label>
+                                        <input
+                                            style={inputStyle}
+                                            placeholder="Tu nombre completo"
+                                            value={form.nombre}
+                                            onChange={(e) => handleChange("nombre", e.target.value)}
+                                        />
+                                    </div>
+                                    <div className="flex flex-col gap-1.5">
+                                        <label className="text-xs font-semibold uppercase tracking-wide"
+                                            style={{ color: "var(--color-vyb-gris-medio)", fontFamily: "var(--font-titulo)" }}>
+                                            Empresa
+                                        </label>
+                                        <input
+                                            style={inputStyle}
+                                            placeholder="Nombre de tu empresa"
+                                            value={form.empresa}
+                                            onChange={(e) => handleChange("empresa", e.target.value)}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                    <div className="flex flex-col gap-1.5">
+                                        <label className="text-xs font-semibold uppercase tracking-wide"
+                                            style={{ color: "var(--color-vyb-gris-medio)", fontFamily: "var(--font-titulo)" }}>
+                                            Email *
+                                        </label>
+                                        <input
+                                            style={inputStyle}
+                                            type="email"
+                                            placeholder="tu@email.com"
+                                            value={form.email}
+                                            onChange={(e) => handleChange("email", e.target.value)}
+                                        />
+                                    </div>
+                                    <div className="flex flex-col gap-1.5">
+                                        <label className="text-xs font-semibold uppercase tracking-wide"
+                                            style={{ color: "var(--color-vyb-gris-medio)", fontFamily: "var(--font-titulo)" }}>
+                                            Teléfono
+                                        </label>
+                                        <input
+                                            style={inputStyle}
+                                            placeholder="+56 9 xxxxxxxx"
+                                            value={form.telefono}
+                                            onChange={(e) => handleChange("telefono", e.target.value)}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col gap-1.5">
+                                    <label className="text-xs font-semibold uppercase tracking-wide"
+                                        style={{ color: "var(--color-vyb-gris-medio)", fontFamily: "var(--font-titulo)" }}>
+                                        Servicio de interés *
+                                    </label>
+                                    <select
+                                        style={inputStyle}
+                                        value={form.servicio}
+                                        onChange={(e) => handleChange("servicio", e.target.value)}
+                                    >
+                                        <option value="">Selecciona una opción...</option>
+                                        {serviciosOpciones.map((s) => (
+                                            <option key={s} value={s}>{s}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                <div className="flex flex-col gap-1.5">
+                                    <label className="text-xs font-semibold uppercase tracking-wide"
+                                        style={{ color: "var(--color-vyb-gris-medio)", fontFamily: "var(--font-titulo)" }}>
+                                        Mensaje
+                                    </label>
+                                    <textarea
+                                        style={{ ...inputStyle, resize: "none" }}
+                                        rows={4}
+                                        placeholder="Cuéntanos sobre tu empresa y lo que necesitas..."
+                                        value={form.mensaje}
+                                        onChange={(e) => handleChange("mensaje", e.target.value)}
+                                    />
+                                </div>
+
+                                <button
+                                    onClick={handleSubmit}
+                                    disabled={enviando || !form.nombre || !form.email || !form.servicio}
+                                    className="flex items-center justify-center gap-2 py-4 rounded-full font-semibold text-white transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                                    style={{ background: "var(--color-vyb-azul)", fontFamily: "var(--font-titulo)" }}
+                                >
+                                    {enviando ? (
+                                        <span className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full" />
+                                    ) : (
+                                        <><Send size={18} /> Enviar mensaje</>
+                                    )}
+                                </button>
+
+                                <p className="text-xs text-center" style={{ color: "var(--color-vyb-gris-medio)" }}>
+                                    * Campos obligatorios. Tu información es confidencial.
+                                </p>
+                            </div>
+                        )}
                     </motion.div>
-
-                    <div className="relative">
-                        {/* Línea vertical */}
-                        <div className="absolute left-8 top-0 bottom-0 w-0.5"
-                            style={{ background: "var(--color-vyb-azul-claro)" }} />
-
-                        <div className="flex flex-col gap-8">
-                            {hitos.map((hito, i) => (
-                                <motion.div key={hito.año}
-                                    initial={{ opacity: 0, x: -20 }}
-                                    whileInView={{ opacity: 1, x: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: i * 0.1 }}
-                                    className="flex gap-6 items-start pl-4">
-                                    {/* Punto en la línea */}
-                                    <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 z-10"
-                                        style={{ background: "var(--color-vyb-azul)", marginLeft: "-4px" }}>
-                                        <div className="w-2 h-2 rounded-full bg-white" />
-                                    </div>
-                                    <div className="pb-2">
-                                        <span className="text-sm font-bold block mb-1"
-                                            style={{ color: "var(--color-vyb-acento)", fontFamily: "var(--font-titulo)" }}>
-                                            {hito.año}
-                                        </span>
-                                        <p className="text-sm" style={{ color: "var(--color-vyb-gris-oscuro)" }}>
-                                            {hito.evento}
-                                        </p>
-                                    </div>
-                                </motion.div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* CTA */}
-            <section className="py-16 px-6"
-                style={{ background: "linear-gradient(135deg, var(--color-vyb-azul), var(--color-vyb-azul-medio))" }}>
-                <div className="max-w-2xl mx-auto text-center">
-                    <h2 className="text-3xl font-extrabold text-white mb-4"
-                        style={{ fontFamily: "var(--font-titulo)" }}>
-                        ¿Quieres ser parte de nuestra historia?
-                    </h2>
-                    <p className="mb-8" style={{ color: "rgba(255,255,255,0.75)" }}>
-                        Únete a las más de 500 organizaciones que confían en V&B Certifica.
-                    </p>
-                    <a href="/contacto"
-                        className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-semibold transition-all duration-300 hover:scale-105"
-                        style={{ background: "white", color: "var(--color-vyb-azul)", fontFamily: "var(--font-titulo)" }}>
-                        Contáctanos hoy
-                    </a>
                 </div>
             </section>
         </main>
