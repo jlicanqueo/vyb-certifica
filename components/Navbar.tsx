@@ -35,10 +35,13 @@ export default function Navbar() {
     // useEffect: ejecuta código cuando el componente se monta en el navegador.
     // Aquí agregamos un "listener" que detecta el scroll.
     useEffect(() => {
-        const handleScroll = () => setScrolled(window.scrollY > 20);
+        setScrolled(window.location.pathname !== "/");
+        const handleScroll = () => {
+            if (window.location.pathname === "/") {
+                setScrolled(window.scrollY > 20);
+            }
+        };
         window.addEventListener("scroll", handleScroll);
-        // La función que retorna es el "cleanup": cuando el componente
-        // se desmonta, removemos el listener para no tener memory leaks.
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
