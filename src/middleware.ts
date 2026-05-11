@@ -3,16 +3,24 @@ import { NextRequest, NextResponse } from "next/server";
 export function middleware(req: NextRequest) {
   const authHeader = req.headers.get("authorization");
 
-  const usuario = process.env.ADMIN_USER || "admin";
-  const password = process.env.ADMIN_PASSWORD || "vyb2024secure";
-  const credencialCorrecta = "Basic " + Buffer.from(`${usuario}:${password}`).toString("base64");
-
-  if (authHeader !== credencialCorrecta) {
+  if (!authHeader || !authHeader.startsWith("Basic ")) {
     return new NextResponse("Acceso restringido", {
       status: 401,
-      headers: {
-        "WWW-Authenticate": 'Basic realm="Panel Admin"',
-      },
+      headers: { "WWW-Authenticate": 'Basic realm="Admin"' },
+    });
+  }
+
+  const base64 = authHeader.slice(6);
+  const decoded = atob(base64); // atob funciona en Edge, Buffer no
+  const [usuario, password] = decoded.split(":");
+
+  const usuarioCorrecto = process.env.ADMIN_USER ?? "admin";
+  const passwordCorrecta = process.env.ADMIN_PASSWORD ?? "vyb2024secure";
+
+  if (usuario !== usuarioCorrecto || password !== passwordCorrecta) {
+    return new NextResponse("Credenciales incorrectas", {
+      status: 401,
+      headers: { "WWW-Authenticate": 'Basic realm="Admin"' },
     });
   }
 
