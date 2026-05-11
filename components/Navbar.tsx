@@ -5,16 +5,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ChevronDown, Award, Shield, MapPin } from "lucide-react";
 import Link from "next/link";
 
-// Definimos los links de navegación como datos separados.
-// Esto es una buena práctica: si mañana agregas un servicio nuevo,
-// solo tocas este array, no el HTML.
 const navLinks = [
     { label: "Inicio", href: "/" },
     { label: "Nosotros", href: "/nosotros" },
     {
         label: "Servicios",
         href: "#",
-        // Los sublinks convierten este item en un dropdown
         sublinks: [
             { label: "Calidad Turística", href: "/servicios/turismo", icono: Award },
             { label: "Normas ISO", href: "/servicios/iso", icono: Shield },
@@ -25,29 +21,35 @@ const navLinks = [
 ];
 
 export default function Navbar() {
-    // Estado para el menú móvil (abierto/cerrado)
     const [menuAbierto, setMenuAbierto] = useState(false);
-    // Estado para saber si el usuario scrolleó (para cambiar el fondo del navbar)
     const [scrolled, setScrolled] = useState(false);
-    // Estado para el dropdown de Servicios
     const [dropdownAbierto, setDropdownAbierto] = useState(false);
 
-    // useEffect: ejecuta código cuando el componente se monta en el navegador.
-    // Aquí agregamos un "listener" que detecta el scroll.
     useEffect(() => {
-        setScrolled(window.location.pathname !== "/");
+        // Manejador de scroll y ruta
         const handleScroll = () => {
-            if (window.location.pathname === "/") {
-                setScrolled(window.scrollY > 20);
+            if (typeof window !== "undefined") {
+                const isHome = window.location.pathname === "/";
+                
+                if (isHome) {
+                    // En Home: transparente arriba, blanco al bajar
+                    setScrolled(window.scrollY > 20);
+                } else {
+                    // En otras páginas: siempre blanco
+                    setScrolled(true);
+                }
             }
         };
+
+        // Escuchar eventos de scroll
         window.addEventListener("scroll", handleScroll);
+        // Ejecutar inmediatamente para detectar la ruta actual al cargar
+        handleScroll();
+
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
     return (
-        // El navbar es position:fixed para que siempre esté visible al scrollear.
-        // Cambia de transparente a blanco con sombra cuando el usuario scrollea.
         <header
             className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
             style={{
@@ -60,7 +62,6 @@ export default function Navbar() {
 
                 {/* LOGO */}
                 <Link href="/" className="flex items-center gap-3 group">
-                    {/* Ícono geométrico como logo temporal hasta tener el logo real */}
                     <div
                         className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-white text-sm transition-transform duration-300 group-hover:scale-110"
                         style={{ background: scrolled ? "var(--color-vyb-azul)" : "white" }}
@@ -80,20 +81,22 @@ export default function Navbar() {
                     </span>
                 </Link>
 
-                {/* LINKS DESKTOP — ocultos en móvil */}
+                {/* LINKS DESKTOP */}
                 <ul className="hidden md:flex items-center gap-8">
                     {navLinks.map((link) =>
                         link.sublinks ? (
-                            // Item con dropdown
-                            <li key={link.label} className="relative">
+                            <li 
+                                key={link.label} 
+                                className="relative"
+                                onMouseEnter={() => setDropdownAbierto(true)}
+                                onMouseLeave={() => setDropdownAbierto(false)}
+                            >
                                 <button
                                     className="flex items-center gap-1 text-sm font-medium transition-colors duration-200"
                                     style={{
                                         fontFamily: "var(--font-titulo)",
                                         color: scrolled ? "var(--color-vyb-gris-oscuro)" : "rgba(255,255,255,0.9)",
                                     }}
-                                    onMouseEnter={() => setDropdownAbierto(true)}
-                                    onMouseLeave={() => setDropdownAbierto(false)}
                                 >
                                     {link.label}
                                     <ChevronDown
@@ -103,7 +106,6 @@ export default function Navbar() {
                                     />
                                 </button>
 
-                                {/* Dropdown panel */}
                                 <AnimatePresence>
                                     {dropdownAbierto && (
                                         <motion.div
@@ -117,8 +119,6 @@ export default function Navbar() {
                                                 boxShadow: "0 8px 32px rgba(27,79,138,0.16)",
                                                 border: "1px solid rgba(27,79,138,0.08)",
                                             }}
-                                            onMouseEnter={() => setDropdownAbierto(true)}
-                                            onMouseLeave={() => setDropdownAbierto(false)}
                                         >
                                             {link.sublinks.map((sub) => (
                                                 <Link
@@ -139,7 +139,6 @@ export default function Navbar() {
                                 </AnimatePresence>
                             </li>
                         ) : (
-                            // Item normal
                             <li key={link.label}>
                                 <Link
                                     href={link.href}
@@ -169,7 +168,7 @@ export default function Navbar() {
                     >
                         Cotizar ahora
                     </Link>
-                </div >
+                </div>
 
                 {/* BOTÓN MENÚ MÓVIL */}
                 <button
@@ -177,54 +176,52 @@ export default function Navbar() {
                     onClick={() => setMenuAbierto(!menuAbierto)}
                     aria-label="Abrir menú"
                 >
-                    {
-                        menuAbierto
-                            ? <X size={24} color={scrolled ? "var(--color-vyb-azul)" : "white"} />
-                            : <Menu size={24} color={scrolled ? "var(--color-vyb-azul)" : "white"} />
+                    {menuAbierto
+                        ? <X size={24} style={{ color: scrolled ? "var(--color-vyb-azul)" : "white" }} />
+                        : <Menu size={24} style={{ color: scrolled ? "var(--color-vyb-azul)" : "white" }} />
                     }
-                </button >
-            </nav >
+                </button>
+            </nav>
 
             {/* MENÚ MÓVIL desplegable */}
             <AnimatePresence>
-                {
-                    menuAbierto && (
-                        <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: "auto" }}
-                            exit={{ opacity: 0, height: 0 }}
-                            transition={{ duration: 0.25 }}
-                            className="md:hidden overflow-hidden"
-                            style={{ background: "white", borderTop: "1px solid rgba(27,79,138,0.08)" }}
-                        >
-                            <div className="px-6 py-4 flex flex-col gap-1">
-                                {navLinks.map((link) => (
-                                    <Link
-                                        key={link.label}
-                                        href={link.href}
-                                        className="py-3 text-sm font-medium border-b"
-                                        style={{
-                                            fontFamily: "var(--font-titulo)",
-                                            color: "var(--color-vyb-gris-oscuro)",
-                                            borderColor: "rgba(27,79,138,0.06)",
-                                        }}
-                                        onClick={() => setMenuAbierto(false)}
-                                    >
-                                        {link.label}
-                                    </Link>
-                                ))}
+                {menuAbierto && (
+                    <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.25 }}
+                        className="md:hidden overflow-hidden"
+                        style={{ background: "white", borderTop: "1px solid rgba(27,79,138,0.08)" }}
+                    >
+                        <div className="px-6 py-4 flex flex-col gap-1">
+                            {navLinks.map((link) => (
                                 <Link
-                                    href="/contacto"
-                                    className="mt-3 text-center py-3 rounded-full text-sm font-semibold text-white"
-                                    style={{ background: "var(--color-vyb-azul)" }}
+                                    key={link.label}
+                                    href={link.href}
+                                    className="py-3 text-sm font-medium border-b"
+                                    style={{
+                                        fontFamily: "var(--font-titulo)",
+                                        color: "var(--color-vyb-gris-oscuro)",
+                                        borderColor: "rgba(27,79,138,0.06)",
+                                    }}
+                                    onClick={() => setMenuAbierto(false)}
                                 >
-                                    Cotizar ahora
+                                    {link.label}
                                 </Link>
-                            </div >
-                        </motion.div >
-                    )
-                }
-            </AnimatePresence >
-        </header >
+                            ))}
+                            <Link
+                                href="/contacto"
+                                className="mt-3 text-center py-3 rounded-full text-sm font-semibold text-white"
+                                style={{ background: "var(--color-vyb-azul)" }}
+                                onClick={() => setMenuAbierto(false)}
+                            >
+                                Cotizar ahora
+                            </Link>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </header>
     );
 }
