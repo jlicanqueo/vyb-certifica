@@ -30,7 +30,7 @@ export default function Navbar() {
         const handleScroll = () => {
             if (typeof window !== "undefined") {
                 const isHome = window.location.pathname === "/";
-                
+
                 if (isHome) {
                     // En Home: transparente arriba, blanco al bajar
                     setScrolled(window.scrollY > 20);
@@ -85,8 +85,8 @@ export default function Navbar() {
                 <ul className="hidden md:flex items-center gap-8">
                     {navLinks.map((link) =>
                         link.sublinks ? (
-                            <li 
-                                key={link.label} 
+                            <li
+                                key={link.label}
                                 className="relative"
                                 onMouseEnter={() => setDropdownAbierto(true)}
                                 onMouseLeave={() => setDropdownAbierto(false)}
