@@ -1,3 +1,4 @@
+import Buscador from "./Buscador";
 import BotonLeida from "./BotonLeida";
 import { redirect } from "next/navigation";
 import { PrismaClient } from "@prisma/client";
@@ -112,7 +113,7 @@ export default async function PanelAdmin({
                     ))}
                 </div>
 
-                {/* Lista consultas */}
+                <Buscador consultas={consultas} />
                 <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                     {consultas.length === 0 ? (
                         <div style={{
