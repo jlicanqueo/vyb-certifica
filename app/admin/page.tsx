@@ -1,3 +1,4 @@
+import BotonLeida from "./BotonLeida";
 import { redirect } from "next/navigation";
 import { PrismaClient } from "@prisma/client";
 import { Clock, Mail, Phone, Building, LogOut, LayoutDashboard } from "lucide-react";
@@ -194,6 +195,8 @@ export default async function PanelAdmin({
                                         }}>
                                             Responder →
                                         </a>
+                                        {/* Botón marcar leída — solo aparece si no está leída */}
+                                        {!c.leida && <BotonLeida id={c.id} />}
                                     </div>
                                 </div>
                             </div>
