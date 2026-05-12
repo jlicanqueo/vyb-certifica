@@ -23,8 +23,7 @@ export default async function PanelAdmin({
     const noLeidas = consultas.filter((c) => !c.leida).length;
 
     return (
-        <div style={{ minHeight: "100vh", background: "#F1F5F9", fontFamily: "'Inter', sans-serif" }}>
-
+        <div className="admin-panel" style={{ minHeight: "100vh", background: "#F1F5F9", fontFamily: "'Inter', sans-serif" }}>
             {/* SIDEBAR */}
             <div style={{
                 position: "fixed", top: 0, left: 0, bottom: 0, width: 240,

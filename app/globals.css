@@ -35,3 +35,13 @@ h4 {
   font-family: var(--font-titulo);
   font-weight: 700;
 }
+
+body:has(.admin-panel) nav,
+body:has(.admin-panel) footer,
+body:has(.admin-panel) #andinita-widget {
+  display: none !important;
+}
+
+body:has(.admin-panel) {
+  padding-top: 0 !important;
+}
