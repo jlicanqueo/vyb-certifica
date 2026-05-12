@@ -9,13 +9,12 @@ export const dynamic = "force-dynamic";
 export default async function PanelAdmin({
     searchParams,
 }: {
-    searchParams: { key?: string };
+    searchParams: Promise<{ key?: string }>;
 }) {
-    // Protección simple por URL key
-    // Acceso: /admin?key=vyb2024secure
+    const params = await searchParams;
     const KEY = process.env.ADMIN_PASSWORD ?? "vyb2024secure";
 
-    if (searchParams.key !== KEY) {
+    if (params.key !== KEY) {
         redirect("/");
     }
 
