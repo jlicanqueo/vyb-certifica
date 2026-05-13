@@ -68,7 +68,6 @@ export default async function PanelAdmin({
                         )}
                     </div>
                 </div>
-
                 <div style={{ padding: "0 12px" }}>
                     <Link href="/" style={{
                         display: "flex", alignItems: "center", gap: 10,
