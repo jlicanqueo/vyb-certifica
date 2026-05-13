@@ -1,18 +1,47 @@
 import { Resend } from "resend";
 import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// Patrón singleton para PrismaClient.
-// ¿Por qué? Next.js en desarrollo recarga módulos constantemente.
-// Sin esto, crearía cientos de conexiones a la base de datos.
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 const prisma = globalForPrisma.prisma ?? new PrismaClient();
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
+// Rate limiter: máximo 3 requests por IP cada 60 minutos
+// ¿Por qué 3? Un usuario real raramente envía más de 1-2 formularios.
+// Si alguien envía 3+, probablemente es un bot o spam.
+const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(3, "60 m"),
+  analytics: true,
+});
+
 export async function POST(req: NextRequest) {
   try {
+    // Obtenemos la IP del usuario
+    const ip = req.headers.get("x-forwarded-for") ??
+      req.headers.get("x-real-ip") ??
+      "anonymous";
+
+    // Verificamos el rate limit
+    const { success, limit, remaining } = await ratelimit.limit(ip);
+
+    if (!success) {
+      return NextResponse.json(
+        { error: "Demasiados intentos. Por favor espera antes de enviar otro mensaje." },
+        {
+          status: 429,
+          headers: {
+            "X-RateLimit-Limit": limit.toString(),
+            "X-RateLimit-Remaining": remaining.toString(),
+          }
+        }
+      );
+    }
+
     const { nombre, empresa, email, telefono, servicio, mensaje } = await req.json();
 
     if (!nombre || !email || !servicio) {
@@ -22,13 +51,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Guardamos en la base de datos PRIMERO
-    // Si el email falla, igual queda el registro
+    // Guardamos en BD
     await prisma.consulta.create({
       data: { nombre, empresa, email, telefono, servicio, mensaje },
     });
 
-    // Luego enviamos los emails
+    // Enviamos emails
     await Promise.all([
       resend.emails.send({
         from: "Andinita <onboarding@resend.dev>",

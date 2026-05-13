@@ -50,7 +50,14 @@ export default function PaginaContacto() {
                 body: JSON.stringify(form),
             });
 
-            if (!res.ok) throw new Error("Error del servidor");
+            const data = await res.json();
+
+            if (res.status === 429) {
+                alert("Has enviado demasiados mensajes. Por favor espera un momento antes de intentar nuevamente.");
+                return;
+            }
+
+            if (!res.ok) throw new Error(data.error);
 
             setEnviado(true);
 
