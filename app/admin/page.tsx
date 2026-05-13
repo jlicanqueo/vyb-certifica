@@ -45,30 +45,7 @@ export default async function PanelAdmin({
                         </div>
                     </div>
                 </div>
-
                 <div style={{ padding: "24px 12px", flex: 1 }}>
-                    <div style={{
-                        display: "flex", alignItems: "center", justifyContent: "space-between",
-                        padding: "10px 12px", borderRadius: 8,
-                        background: "rgba(255,255,255,0.12)", color: "white",
-                        fontSize: 14, fontWeight: 500,
-                    }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                            <LayoutDashboard size={16} />
-                            Consultas
-                        </div>
-                        {noLeidas > 0 && (
-                            <span style={{
-                                background: "#EF4444", color: "white",
-                                fontSize: 11, fontWeight: 700,
-                                padding: "2px 7px", borderRadius: 20,
-                                minWidth: 20, textAlign: "center",
-                            }}>
-                                {noLeidas}
-                            </span>
-                        )}
-                    </div>
-                </div><div style={{ padding: "24px 12px", flex: 1 }}>
                     <div style={{
                         display: "flex", alignItems: "center", justifyContent: "space-between",
                         padding: "10px 12px", borderRadius: 8,
