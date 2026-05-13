@@ -9,7 +9,7 @@ Rediseño completo de la plataforma web para **V&B Certifica**, organismo de cer
 ISO y calidad turística en Chile. Proyecto desarrollado como primer trabajo freelance real, 
 aplicando stack moderno y herramientas de IA para optimizar el desarrollo.
 
-## 🌐 Demo en producción
+## Demo en producción
 
 [vyb-certifica.vercel.app](https://vyb-certifica.vercel.app)
 
@@ -28,7 +28,7 @@ aplicando stack moderno y herramientas de IA para optimizar el desarrollo.
 - **SEO optimizado** con metadata por ruta
 - **Deploy automático** en Vercel desde GitHub
 
-## 🛠 Stack tecnológico
+## Stack tecnológico
 
 | Capa | Tecnología |
 |------|-----------|
@@ -40,7 +40,7 @@ aplicando stack moderno y herramientas de IA para optimizar el desarrollo.
 | Deploy | Vercel |
 | Control de versiones | Git + GitHub |
 
-## 🤖 IA utilizada en el desarrollo
+## IA utilizada en el desarrollo
 
 Este proyecto fue desarrollado con apoyo de **Claude (Anthropic)** como asistente 
 de desarrollo, aplicando un enfoque pedagógico donde cada decisión técnica fue 
@@ -51,7 +51,7 @@ explicada y comprendida, no solo copiada. El uso de IA permitió:
 - Aplicar buenas prácticas de arquitectura desde el inicio
 - Aprender conceptos de Full Stack en un contexto real
 
-## 📁 Estructura del proyecto
+## Estructura del proyecto
 
 vyb-certifica/
 ├── app/
@@ -67,7 +67,7 @@ vyb-certifica/
 └── prisma/
 └── schema.prisma   # Modelo de base de datos
 
-## 👨‍💻 Autor
+## Autor
 
 **Joaquín Licanqueo Irribarra**  
 Estudiante de último año de Ingeniería en Informática — INACAP  
