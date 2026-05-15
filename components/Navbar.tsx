@@ -26,24 +26,19 @@ export default function Navbar() {
     const [dropdownAbierto, setDropdownAbierto] = useState(false);
 
     useEffect(() => {
-        // Manejador de scroll y ruta
         const handleScroll = () => {
             if (typeof window !== "undefined") {
                 const isHome = window.location.pathname === "/";
 
                 if (isHome) {
-                    // En Home: transparente arriba, blanco al bajar
                     setScrolled(window.scrollY > 20);
                 } else {
-                    // En otras páginas: siempre blanco
                     setScrolled(true);
                 }
             }
         };
 
-        // Escuchar eventos de scroll
         window.addEventListener("scroll", handleScroll);
-        // Ejecutar inmediatamente para detectar la ruta actual al cargar
         handleScroll();
 
         return () => window.removeEventListener("scroll", handleScroll);
@@ -60,7 +55,6 @@ export default function Navbar() {
         >
             <nav className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
 
-                {/* LOGO */}
                 <Link href="/" className="flex items-center gap-3 group">
                     <div
                         className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-white text-sm transition-transform duration-300 group-hover:scale-110"
@@ -81,7 +75,6 @@ export default function Navbar() {
                     </span>
                 </Link>
 
-                {/* LINKS DESKTOP */}
                 <ul className="hidden md:flex items-center gap-8">
                     {navLinks.map((link) =>
                         link.sublinks ? (
@@ -155,7 +148,6 @@ export default function Navbar() {
                     )}
                 </ul>
 
-                {/* BOTÓN CTA DESKTOP */}
                 <div className="hidden md:block">
                     <Link
                         href="/contacto"
@@ -170,7 +162,6 @@ export default function Navbar() {
                     </Link>
                 </div>
 
-                {/* BOTÓN MENÚ MÓVIL */}
                 <button
                     className="md:hidden p-2 rounded-lg"
                     onClick={() => setMenuAbierto(!menuAbierto)}
@@ -183,7 +174,6 @@ export default function Navbar() {
                 </button>
             </nav>
 
-            {/* MENÚ MÓVIL desplegable */}
             <AnimatePresence>
                 {menuAbierto && (
                     <motion.div

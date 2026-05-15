@@ -8,7 +8,6 @@ export default function HomePage() {
   return (
     <main className="min-h-screen">
 
-      {/* HERO */}
       <section
         className="relative min-h-screen flex items-center justify-center px-6 py-32 overflow-hidden"
         style={{ background: "linear-gradient(135deg, var(--color-vyb-azul) 0%, #1a3a6b 50%, var(--color-vyb-azul-medio) 100%)" }}
@@ -69,7 +68,6 @@ export default function HomePage() {
             </Link>
           </motion.div>
 
-          {/* Estadísticas */}
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.6 }}
@@ -90,7 +88,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* SERVICIOS */}
       <section id="servicios" className="py-24 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
           <motion.div
@@ -120,7 +117,6 @@ export default function HomePage() {
                 className="group p-8 rounded-3xl cursor-pointer transition-all duration-300"
                 style={{ background: "var(--color-vyb-gris-claro)", boxShadow: "var(--shadow-vyb-card)" }}
               >
-                {/* Ícono */}
                 <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110"
                   style={{ background: "var(--color-vyb-azul-claro)" }}>
                   <s.icono size={26} style={{ color: "var(--color-vyb-azul)" }} />
@@ -133,7 +129,6 @@ export default function HomePage() {
                   {s.descripcion}
                 </p>
 
-                {/* Tags de sub-servicios */}
                 <div className="flex flex-wrap gap-2">
                   {s.tags.map((tag) => (
                     <span key={tag} className="text-xs px-3 py-1 rounded-full font-medium"
@@ -148,7 +143,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* POR QUÉ ELEGIRNOS */}
       <section className="py-24 px-6" style={{ background: "var(--color-vyb-gris-claro)" }}>
         <div className="max-w-6xl mx-auto">
           <motion.div
@@ -190,7 +184,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA FINAL */}
       <section className="py-24 px-6"
         style={{ background: "linear-gradient(135deg, var(--color-vyb-azul) 0%, var(--color-vyb-azul-medio) 100%)" }}>
         <div className="max-w-3xl mx-auto text-center">
@@ -225,7 +218,6 @@ export default function HomePage() {
   );
 }
 
-// ── DATOS ──────────────────────────────────────────────
 const servicios = [
   {
     titulo: "Calidad Turística",

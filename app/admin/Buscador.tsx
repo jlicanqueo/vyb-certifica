@@ -20,7 +20,6 @@ export default function Buscador({ consultas }: { consultas: Consulta[] }) {
     const [busqueda, setBusqueda] = useState("");
     const [filtro, setFiltro] = useState<"todas" | "nuevas" | "leidas">("todas");
 
-    // Filtramos en el cliente — no necesitamos ir al servidor
     const consultasFiltradas = consultas.filter((c) => {
         const coincideBusqueda =
             busqueda === "" ||
@@ -39,12 +38,10 @@ export default function Buscador({ consultas }: { consultas: Consulta[] }) {
 
     return (
         <div>
-            {/* Barra de búsqueda + filtros */}
             <div style={{
                 display: "flex", gap: 12, marginBottom: 20, flexWrap: "wrap",
                 alignItems: "center",
             }}>
-                {/* Input búsqueda */}
                 <div style={{
                     flex: 1, minWidth: 200,
                     display: "flex", alignItems: "center", gap: 10,
@@ -64,7 +61,6 @@ export default function Buscador({ consultas }: { consultas: Consulta[] }) {
                     />
                 </div>
 
-                {/* Filtros de estado */}
                 {(["todas", "nuevas", "leidas"] as const).map((f) => (
                     <button key={f} onClick={() => setFiltro(f)}
                         style={{
@@ -80,12 +76,10 @@ export default function Buscador({ consultas }: { consultas: Consulta[] }) {
                 ))}
             </div>
 
-            {/* Resultado */}
             <p style={{ fontSize: 13, color: "#94A3B8", marginBottom: 12 }}>
                 {consultasFiltradas.length} resultado{consultasFiltradas.length !== 1 ? "s" : ""}
             </p>
 
-            {/* Lista */}
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                 {consultasFiltradas.length === 0 ? (
                     <div style={{

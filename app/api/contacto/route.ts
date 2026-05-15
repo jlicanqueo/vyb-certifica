@@ -10,9 +10,7 @@ const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 const prisma = globalForPrisma.prisma ?? new PrismaClient();
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
-// Rate limiter: máximo 3 requests por IP cada 60 minutos
-// ¿Por qué 3? Un usuario real raramente envía más de 1-2 formularios.
-// Si alguien envía 3+, probablemente es un bot o spam.
+// Rate limiting: 3 requests por IP cada 60 minutos
 const ratelimit = new Ratelimit({
   redis: Redis.fromEnv(),
   limiter: Ratelimit.slidingWindow(3, "60 m"),
@@ -21,12 +19,10 @@ const ratelimit = new Ratelimit({
 
 export async function POST(req: NextRequest) {
   try {
-    // Obtenemos la IP del usuario
     const ip = req.headers.get("x-forwarded-for") ??
       req.headers.get("x-real-ip") ??
       "anonymous";
 
-    // Verificamos el rate limit
     const { success, limit, remaining } = await ratelimit.limit(ip);
 
     if (!success) {
@@ -51,12 +47,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Guardamos en BD
     await prisma.consulta.create({
       data: { nombre, empresa, email, telefono, servicio, mensaje },
     });
 
-    // Enviamos emails
     await Promise.all([
       resend.emails.send({
         from: "Andinita <onboarding@resend.dev>",

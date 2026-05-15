@@ -26,7 +26,6 @@ export default async function PanelAdmin({
     return (
         <div className="admin-panel" style={{ minHeight: "100vh", background: "#F1F5F9", fontFamily: "'Inter', sans-serif" }}>
 
-            {/* SIDEBAR */}
             <div style={{
                 position: "fixed", top: 0, left: 0, bottom: 0, width: 240,
                 background: "#1B4F8A", display: "flex", flexDirection: "column",
@@ -81,7 +80,6 @@ export default async function PanelAdmin({
                 </div>
             </div>
 
-            {/* CONTENIDO */}
             <div style={{ marginLeft: 240, padding: "40px" }}>
 
                 <div style={{ marginBottom: 32 }}>
@@ -93,7 +91,6 @@ export default async function PanelAdmin({
                     </p>
                 </div>
 
-                {/* Stats */}
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginBottom: 32 }}>
                     {[
                         { label: "Total consultas", valor: total, color: "#1B4F8A", bg: "#DBEAFE" },
@@ -118,7 +115,6 @@ export default async function PanelAdmin({
                     ))}
                 </div>
 
-                {/* Buscador — contiene toda la lista */}
                 <Buscador consultas={consultas} />
 
             </div>

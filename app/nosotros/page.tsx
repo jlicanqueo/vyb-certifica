@@ -40,7 +40,6 @@ export default function PaginaNosotros() {
     return (
         <main className="min-h-screen pt-20">
 
-            {/* HERO */}
             <section className="py-20 px-6 text-white"
                 style={{ background: "linear-gradient(135deg, var(--color-vyb-azul) 0%, #1a3a6b 100%)" }}>
                 <div className="max-w-4xl mx-auto">
@@ -72,7 +71,6 @@ export default function PaginaNosotros() {
                 </div>
             </section>
 
-            {/* MISIÓN Y VISIÓN */}
             <section className="py-20 px-6 bg-white">
                 <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
                     <motion.div
@@ -121,7 +119,6 @@ export default function PaginaNosotros() {
                 </div>
             </section>
 
-            {/* VALORES */}
             <section className="py-20 px-6" style={{ background: "var(--color-vyb-gris-claro)" }}>
                 <div className="max-w-6xl mx-auto">
                     <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
@@ -157,7 +154,6 @@ export default function PaginaNosotros() {
                 </div>
             </section>
 
-            {/* LÍNEA DE TIEMPO */}
             <section className="py-20 px-6 bg-white">
                 <div className="max-w-3xl mx-auto">
                     <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
@@ -169,7 +165,6 @@ export default function PaginaNosotros() {
                     </motion.div>
 
                     <div className="relative">
-                        {/* Línea vertical */}
                         <div className="absolute left-8 top-0 bottom-0 w-0.5"
                             style={{ background: "var(--color-vyb-azul-claro)" }} />
 
@@ -181,7 +176,6 @@ export default function PaginaNosotros() {
                                     viewport={{ once: true }}
                                     transition={{ delay: i * 0.1 }}
                                     className="flex gap-6 items-start pl-4">
-                                    {/* Punto en la línea */}
                                     <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 z-10"
                                         style={{ background: "var(--color-vyb-azul)", marginLeft: "-4px" }}>
                                         <div className="w-2 h-2 rounded-full bg-white" />
@@ -202,7 +196,6 @@ export default function PaginaNosotros() {
                 </div>
             </section>
 
-            {/* CTA */}
             <section className="py-16 px-6"
                 style={{ background: "linear-gradient(135deg, var(--color-vyb-azul), var(--color-vyb-azul-medio))" }}>
                 <div className="max-w-2xl mx-auto text-center">

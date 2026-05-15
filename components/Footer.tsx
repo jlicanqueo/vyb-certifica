@@ -27,7 +27,6 @@ export default function Footer() {
         <footer style={{ background: "var(--color-vyb-gris-oscuro)" }}>
             <div className="max-w-6xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-3 gap-12">
 
-                {/* Columna 1 — Marca */}
                 <div>
                     <div className="flex items-center gap-3 mb-4">
                         <div className="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-sm"
@@ -56,7 +55,6 @@ export default function Footer() {
                     </div>
                 </div>
 
-                {/* Columna 2 — Links */}
                 <div>
                     <h4 className="font-semibold text-white mb-5 text-sm tracking-wider uppercase"
                         style={{ fontFamily: "var(--font-titulo)" }}>
@@ -74,7 +72,6 @@ export default function Footer() {
                     </ul>
                 </div>
 
-                {/* Columna 3 — Contacto */}
                 <div>
                     <h4 className="font-semibold text-white mb-5 text-sm tracking-wider uppercase"
                         style={{ fontFamily: "var(--font-titulo)" }}>
@@ -99,7 +96,6 @@ export default function Footer() {
                 </div>
             </div>
 
-            {/* Barra inferior */}
             <div className="border-t px-6 py-5" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
                 <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2 text-xs"
                     style={{ color: "rgba(255,255,255,0.3)" }}>

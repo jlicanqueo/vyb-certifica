@@ -11,7 +11,7 @@ export default function BotonLeida({ id }: { id: string }) {
     async function marcarLeida() {
         setCargando(true);
         await fetch(`/api/consultas/${id}`, { method: "PATCH" });
-        router.refresh(); // Recarga los datos sin recargar la página completa
+        router.refresh();
         setCargando(false);
     }
 

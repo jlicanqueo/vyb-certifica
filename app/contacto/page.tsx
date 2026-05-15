@@ -5,8 +5,6 @@ import { motion } from "framer-motion";
 import { Mail, Phone, MapPin, Send, CheckCircle } from "lucide-react";
 import Link from "next/link";
 
-// Estado del formulario — TypeScript nos obliga a definir
-// la forma exacta de los datos. Esto evita errores silenciosos.
 type FormData = {
     nombre: string;
     empresa: string;
@@ -61,7 +59,7 @@ export default function PaginaContacto() {
 
             setEnviado(true);
 
-        } catch (error) {
+        } catch {
             alert("Hubo un problema al enviar. Por favor intenta de nuevo o contáctanos directamente.");
         } finally {
             setEnviando(false);
@@ -84,7 +82,6 @@ export default function PaginaContacto() {
     return (
         <main className="min-h-screen pt-20">
 
-            {/* HERO */}
             <section className="py-20 px-6 text-white"
                 style={{ background: "linear-gradient(135deg, var(--color-vyb-azul) 0%, #1a3a6b 100%)" }}>
                 <div className="max-w-4xl mx-auto">
@@ -110,11 +107,9 @@ export default function PaginaContacto() {
                 </div>
             </section>
 
-            {/* CONTENIDO PRINCIPAL */}
             <section className="py-20 px-6" style={{ background: "var(--color-vyb-gris-claro)" }}>
                 <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12">
 
-                    {/* Info de contacto — columna izquierda */}
                     <motion.div
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -155,7 +150,6 @@ export default function PaginaContacto() {
                             </div>
                         ))}
 
-                        {/* WhatsApp directo */}
                         <a href="https://wa.me/56929910646" target="_blank" rel="noopener noreferrer"
                             className="flex items-center justify-center gap-2 py-3 px-6 rounded-full text-sm font-semibold transition-all duration-300 hover:scale-105"
                             style={{ background: "#25D366", color: "white", fontFamily: "var(--font-titulo)" }}>
@@ -163,7 +157,6 @@ export default function PaginaContacto() {
                         </a>
                     </motion.div>
 
-                    {/* Formulario — columna derecha (2/3 del ancho) */}
                     <motion.div
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -172,7 +165,6 @@ export default function PaginaContacto() {
                         style={{ background: "white", boxShadow: "var(--shadow-vyb-hover)" }}
                     >
                         {enviado ? (
-                            // Estado de éxito — se muestra tras enviar
                             <motion.div
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
@@ -203,7 +195,6 @@ export default function PaginaContacto() {
                                     Formulario de contacto
                                 </h3>
 
-                                {/* Fila de dos columnas */}
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                     <div className="flex flex-col gap-1.5">
                                         <label className="text-xs font-semibold uppercase tracking-wide"

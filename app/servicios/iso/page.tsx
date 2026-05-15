@@ -53,13 +53,11 @@ export default function PaginaISO() {
     return (
         <main className="min-h-screen pt-20">
 
-            {/* HERO de página interna — más compacto que el homepage */}
             <section
                 className="py-20 px-6 text-white"
                 style={{ background: "linear-gradient(135deg, var(--color-vyb-azul) 0%, #1a3a6b 100%)" }}
             >
                 <div className="max-w-4xl mx-auto">
-                    {/* Breadcrumb — le dice al usuario dónde está */}
                     <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -102,7 +100,6 @@ export default function PaginaISO() {
                 </div>
             </section>
 
-            {/* NORMAS DISPONIBLES */}
             <section className="py-20 px-6 bg-white">
                 <div className="max-w-6xl mx-auto">
                     <motion.div
@@ -132,7 +129,6 @@ export default function PaginaISO() {
                                 className="p-6 rounded-3xl transition-all duration-300"
                                 style={{ background: "var(--color-vyb-gris-claro)", boxShadow: "var(--shadow-vyb-card)" }}
                             >
-                                {/* Badge de código */}
                                 <span className="text-xs font-bold px-3 py-1 rounded-full mb-4 inline-block"
                                     style={{ background: norma.color + "15", color: norma.color, fontFamily: "var(--font-titulo)" }}>
                                     {norma.codigo}
@@ -162,7 +158,6 @@ export default function PaginaISO() {
                 </div>
             </section>
 
-            {/* PROCESO */}
             <section className="py-20 px-6" style={{ background: "var(--color-vyb-gris-claro)" }}>
                 <div className="max-w-4xl mx-auto">
                     <motion.div
@@ -208,7 +203,6 @@ export default function PaginaISO() {
                 </div>
             </section>
 
-            {/* CTA */}
             <section className="py-16 px-6"
                 style={{ background: "linear-gradient(135deg, var(--color-vyb-azul), var(--color-vyb-azul-medio))" }}>
                 <div className="max-w-2xl mx-auto text-center">

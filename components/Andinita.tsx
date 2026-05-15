@@ -5,19 +5,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { Send, Minimize2 } from "lucide-react";
 
-// Tipos de TypeScript — definen la "forma" de los datos.
-// Un mensaje tiene: quién lo envió y qué dice.
-// Esto evita errores como pasar un número donde va un texto.
 type Rol = "andinita" | "usuario";
 type Mensaje = {
     rol: Rol;
     texto: string;
 };
 
-// Respuestas automáticas de Andinita.
-// Buscamos palabras clave en lo que escribe el usuario
-// y devolvemos una respuesta apropiada.
-// En la Etapa 3 esto se reemplaza por la API de Claude.
 const respuestas: { palabras: string[]; respuesta: string }[] = [
     {
         palabras: ["hola", "buenas", "saludos", "hey"],
@@ -53,7 +46,6 @@ const respuestas: { palabras: string[]; respuesta: string }[] = [
     },
 ];
 
-// Función que busca una respuesta según lo que escribió el usuario
 function buscarRespuesta(texto: string): string {
     const textoMin = texto.toLowerCase();
     for (const item of respuestas) {
@@ -75,8 +67,6 @@ export default function Andinita() {
     const [input, setInput] = useState("");
     const [pensando, setPensando] = useState(false);
 
-    // useRef apunta al final de la lista de mensajes
-    // para hacer scroll automático cuando llega uno nuevo
     const bottomRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -87,7 +77,6 @@ export default function Andinita() {
         const texto = input.trim();
         if (!texto) return;
 
-        // 1. Agregar mensaje del usuario
         const nuevosMensajes: Mensaje[] = [
             ...mensajes,
             { rol: "usuario", texto },
@@ -96,8 +85,6 @@ export default function Andinita() {
         setInput("");
         setPensando(true);
 
-        // 2. Simular que Andinita "piensa" antes de responder
-        // setTimeout ejecuta código después de un delay (en milisegundos)
         setTimeout(() => {
             setPensando(false);
             setMensajes((prev) => [
@@ -109,9 +96,7 @@ export default function Andinita() {
 
     return (
         <>
-            {/* BOTÓN FLOTANTE — siempre visible en la esquina */}
             <div id="andinita-widget" className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
-                {/* Burbuja de bienvenida — aparece si el chat está cerrado */}
                 <AnimatePresence>
                     {!abierto && (
                         <motion.div
@@ -133,10 +118,8 @@ export default function Andinita() {
                     )}
                 </AnimatePresence>
 
-                {/* IMAGEN DE ANDINITA con animación de float */}
                 <motion.button
                     onClick={() => setAbierto(!abierto)}
-                    // animate con keyframes: va de y=0 a y=-8 y vuelve (efecto flotante)
                     animate={{ y: [0, -8, 0] }}
                     transition={{
                         duration: 3,
@@ -162,7 +145,6 @@ export default function Andinita() {
                 </motion.button>
             </div>
 
-            {/* VENTANA DEL CHAT */}
             <AnimatePresence>
                 {abierto && (
                     <motion.div
@@ -180,14 +162,12 @@ export default function Andinita() {
                             border: "1px solid rgba(27,79,138,0.1)",
                         }}
                     >
-                        {/* Header del chat */}
                         <div
                             className="flex items-center gap-3 px-4 py-3"
                             style={{
                                 background: "linear-gradient(135deg, var(--color-vyb-azul), var(--color-vyb-azul-medio))",
                             }}
                         >
-                            {/* Mini avatar de Andinita en el header */}
                             <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-white flex-shrink-0">
                                 <Image
                                     src="/gato.gui.jpg"
@@ -216,7 +196,6 @@ export default function Andinita() {
                             </button>
                         </div>
 
-                        {/* Área de mensajes */}
                         <div className="flex-1 overflow-y-auto px-4 py-4 flex flex-col gap-3"
                             style={{ background: "#F8FAFC" }}>
                             {mensajes.map((m, i) => (
@@ -244,7 +223,6 @@ export default function Andinita() {
                                 </div>
                             ))}
 
-                            {/* Indicador "pensando..." con tres puntos animados */}
                             {pensando && (
                                 <div className="flex justify-start">
                                     <div
@@ -272,11 +250,9 @@ export default function Andinita() {
                                 </div>
                             )}
 
-                            {/* Elemento invisible al final para el auto-scroll */}
                             <div ref={bottomRef} />
                         </div>
 
-                        {/* Input para escribir */}
                         <div
                             className="px-3 py-3 flex gap-2 items-center"
                             style={{
@@ -288,7 +264,6 @@ export default function Andinita() {
                                 type="text"
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
-                                // Al presionar Enter también envía el mensaje
                                 onKeyDown={(e) => e.key === "Enter" && enviarMensaje()}
                                 placeholder="Escribe tu consulta..."
                                 className="flex-1 px-4 py-2 text-sm outline-none rounded-full"

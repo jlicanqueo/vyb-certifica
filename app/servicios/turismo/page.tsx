@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Award, ArrowRight } from "lucide-react";
+import { Award } from "lucide-react";
 import Link from "next/link";
 
 export default function TurismoPage() {
